@@ -1,0 +1,46 @@
+# =============== #
+# Unity Generated #
+# =============== #
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+
+# ================= #
+# Visual Studio/VSCode #
+# ================= #
+.vscode/
+.vs/
+/*.csproj
+/*.unityproj
+/*.sln
+/*.suo
+/*.tmp
+/*.user
+/*.userprefs
+/*.pidb
+/*.booproj
+/*.svd
+/[Pp]rojectSettings/EditorBuildSettings.asset
+/[Pp]rojectSettings/ProjectSettings.asset
+
+# ============================ #
+# OS-generated and System Files #
+# ============================ #
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =================== #
+# Unity Asset Packages #
+# =================== #
+*.unitypackage
+
+# ================= #
+# Crash Logs and Debug #
+# ================= #
+*.stacktrace
+*.log

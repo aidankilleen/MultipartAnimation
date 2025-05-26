@@ -1,0 +1,11 @@
+# Force binary files to be treated as binary
+*.asset binary
+*.meta binary
+*.prefab binary
+*.unity binary
+*.dwlt binary
+
+# Text files should keep native line endings
+*.cs text eol=lf
+*.shader text eol=lf
+*.txt text eol=lf
