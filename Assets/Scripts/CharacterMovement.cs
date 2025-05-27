@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMovement : MonoBehaviour
@@ -11,8 +12,9 @@ public class CharacterMovement : MonoBehaviour
     private Animator animator;
     private Rigidbody rb;
 
-    public Transform handSocket;
-    private GameObject appleInRange;
+    public GameObject holdPoint;
+    public GameObject itemToPickup;
+    public float throwForce = 500f;
 
     private float verticalInput;
     private float horizontalInput;
@@ -29,6 +31,11 @@ public class CharacterMovement : MonoBehaviour
     {
         verticalInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            animator.SetTrigger("DoThrow");
+        }
 
         // Set animation parameters
         float speed = new Vector2(horizontalInput, verticalInput).magnitude;
@@ -53,22 +60,56 @@ public class CharacterMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Apple"))
         {
-            appleInRange = collision.gameObject;
+            itemToPickup = collision.gameObject;
+ 
             animator.SetTrigger("DoPickup");
         }
     }
     public void AttachAppleToHand()
     {
-        if (appleInRange != null)
-        {
-            // Snap apple to hand
-            appleInRange.transform.SetParent(handSocket);
-            appleInRange.transform.localPosition = Vector3.zero;
-            appleInRange.transform.localRotation = Quaternion.identity;
+        Debug.Log("AttachAppleToHand event triggered");
+        if (itemToPickup != null)
 
-            // Disable physics so it stays in hand
-            Rigidbody rb = appleInRange.GetComponent<Rigidbody>();
-            if (rb != null) rb.isKinematic = true;
+        {
+            // Disable physics so it stays in hand nb do this before parenting it
+
+            Rigidbody rb = itemToPickup.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Debug.Log("disabling physics");
+                rb.velocity = Vector3.zero;  // Stop motion
+                rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;       // Disable physics
+                rb.detectCollisions = false; // Optional: Avoid post-parenting collision issues
+            }
+
+            // Snap apple to hand
+            itemToPickup.transform.SetParent(holdPoint.transform);
+            itemToPickup.transform.localPosition = Vector3.zero;
+            itemToPickup.transform.localRotation = Quaternion.identity;
+
         }
+    }
+    public void ThrowItem()
+    {
+        Debug.Log("Throw event triggered");
+        if (itemToPickup != null)
+        {
+            // Detach from hand
+            itemToPickup.transform.SetParent(null);
+
+            Rigidbody rb = itemToPickup.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.detectCollisions = true;
+
+                // Apply force forward from hand
+                Vector3 throwDirection = transform.forward;
+                rb.AddForce(throwDirection * throwForce);
+            }
+            
+        }
+
     }
 }

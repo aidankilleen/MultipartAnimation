@@ -4,6 +4,9 @@
 *.prefab binary
 *.unity binary
 *.dwlt binary
+*.controller binary
+*.anim binary
+
 
 # Text files should keep native line endings
 *.cs text eol=lf
